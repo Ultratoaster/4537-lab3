@@ -1,4 +1,4 @@
-const BaseHandler = require('./BaseHandler');
+const BaseHandler = require('./jankbaseHandler');
 const fs = require('fs');
 const path = require('path');
 const { escapehtml } = require('../utils');
