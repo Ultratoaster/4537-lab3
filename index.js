@@ -2,8 +2,8 @@
 // Author: Ben Henry
 
 const HttpServer = require('./httpServer');
-const DateHandler = require('./mandlers/dateHandler');
-const FileHandler = require('./mandlers/fileHandler');
+const DateHandler = require('./handlers/dateHandler');
+const FileHandler = require('./handlers/fileHandler');
 
 const PORT = process.env.PORT || 3000;
 
