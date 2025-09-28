@@ -1,4 +1,4 @@
-const BaseHandler = require('./jankbaseHandler');
+const BaseHandler = require('./baseHandler');
 const { getDate, escapehtml } = require('../utils');
 const messages = require('../lang/messages/en/user');
 
