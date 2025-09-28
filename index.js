@@ -1,7 +1,7 @@
 // Lab 3 API - Object-Oriented Design
 // Author: Ben Henry
 
-const HttpServer = require('./httpServer');
+const HttpServer = require('./jankhttpServer');
 const DateHandler = require('./handlers/dateHandler');
 const FileHandler = require('./handlers/fileHandler');
 
