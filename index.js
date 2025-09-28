@@ -1,52 +1,27 @@
-// Lab 3 API
+// Lab 3 API - Object-Oriented Design
 // Author: Ben Henry
 
-const http = require('http');
-const { getDate, escapehtml } = require ('./utils');
-const messages = require ('./lang/messages/en/user');
+const HttpServer = require('./HttpServer');
+const DateHandler = require('./handlers/dateHandler');
+const FileHandler = require('./handlers/fileHandler');
 
 const PORT = process.env.PORT || 3000;
 
+const server = new HttpServer(PORT);
 
+const dateHandler = new DateHandler();
+const fileHandler = new FileHandler();
 
-const server = http.createServer((req, res) => {
-  try {
-    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-    const pathname = parsedUrl.pathname;
-    const headContentType = 'text/html; charset=UTF-8';
-
-    if (pathname === '/labs/3/getDate') {
-      if (req.method !== 'GET') {
-            res.writeHead(405, { 'Content-Type': headContentType });
-            return res.end('<h1 style="color: red;">405 Method Not Allowed</h1>');
-        }
-
-        const name = parsedUrl.searchParams.get('name');
-        if (!name) {
-            res.writeHead(400, { 'Content-Type': headContentType });
-            return res.end(`<p style="color: red;">${messages.ERROR_NO_NAME}</p>`);
-        }
-
-        const currentDate = getDate();
-
-        const message = messages.GREETING
-        .replace('{name}', escapehtml(name))
-        .replace('{date}', escapehtml(currentDate))
-        .replace('{time}', escapehtml(new Date().toLocaleTimeString()));
-
-        res.writeHead(200, { 'Content-Type': headContentType });
-        res.end(`<p style="color: blue;">${message}</p>`);
-    } else {
-        res.writeHead(404, { 'Content-Type': headContentType });
-        res.end('<h1>404 Not Found</h1>');
-    }
-  } catch (error) {
-    res.writeHead(500, { 'Content-Type': headContentType });
-    res.end('<h1 style="color: red;">500 Internal Server Error</h1>');
-  }
+server.addRoute('GET', '/labs/3/getDate', (req, res, parsedUrl) => {
+    dateHandler.handle(req, res, parsedUrl);
 });
 
-
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+server.addRoute('GET', '/labs/3/writeFile', (req, res, parsedUrl) => {
+    fileHandler.writeFile(req, res, parsedUrl);
 });
+
+server.addRoute('GET', '/labs/3/readFile', (req, res, parsedUrl, fileName) => {
+    fileHandler.readFile(req, res, parsedUrl, fileName);
+});
+
+server.start();
