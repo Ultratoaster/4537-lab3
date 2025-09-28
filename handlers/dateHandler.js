@@ -1,6 +1,6 @@
 const BaseHandler = require('./baseHandler');
 const { getDate, escapehtml } = require('../utils');
-const messages = require('../lang/messages/en/user');
+const messageManager = require('../services/messageManager');
 
 class DateHandler extends BaseHandler {
   handle(req, res, parsedUrl) {
@@ -10,14 +10,15 @@ class DateHandler extends BaseHandler {
 
     const name = parsedUrl.searchParams.get('name');
     if (!name) {
-      return this.sendError(res, 400, messages.ERROR_NO_NAME);
+      return this.sendError(res, 400, messageManager.t('ERROR_NO_NAME'));
     }
 
     const currentDate = getDate();
-    const message = messages.GREETING
-      .replace('{name}', escapehtml(name))
-      .replace('{date}', escapehtml(currentDate))
-      .replace('{time}', escapehtml(new Date().toLocaleTimeString()));
+    const message = messageManager.t('GREETING', {
+      name: escapehtml(name),
+      date: escapehtml(currentDate),
+      time: escapehtml(new Date().toLocaleTimeString())
+    });
 
     this.sendSuccess(res, `<p style="color: blue;">${message}</p>`);
   }

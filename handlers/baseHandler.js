@@ -1,3 +1,5 @@
+const messageManager = require('../services/messageManager');
+
 class BaseHandler {
   constructor() {
     this.contentType = 'text/html; charset=UTF-8';
@@ -6,7 +8,7 @@ class BaseHandler {
   validateMethod(req, res, allowedMethod = 'GET') {
     if (req.method !== allowedMethod.toUpperCase()) {
       res.writeHead(405, { 'Content-Type': this.contentType });
-      res.end('<h1 style="color: red;">405 Method Not Allowed</h1>');
+      res.end(`<h1 style="color: red;">${messageManager.t('ERROR_ILLEGAL_METHOD')}</h1>`);
       return false;
     }
     return true;

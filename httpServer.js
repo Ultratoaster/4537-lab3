@@ -1,4 +1,5 @@
 const http = require('http');
+const messageManager = require('./services/messageManager');
 
 class HttpServer {
     constructor(port = 3000) {
@@ -41,10 +42,10 @@ class HttpServer {
            
 
             res.writeHead(404, { 'Content-Type': 'text/html; charset=UTF-8' });
-            res.end('<h1>404 Not Found</h1>');
+            res.end(`<h1>${messageManager.t('ERROR_NOT_FOUND')}</h1>`);
         } catch (error) {
             res.writeHead(500, { 'Content-Type': 'text/html; charset=UTF-8' });
-            res.end('<h1 style="color: red;">500 Internal Server Error</h1>');
+            res.end(`<h1 style="color: red;">${messageManager.t('ERROR_INTERNAL')}</h1>`);
         }
     }
 
